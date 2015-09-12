@@ -1,0 +1,33 @@
+Mark Allocation
+  10% - Code comments
+  10% - Coding standards, coding structure, choice of seperation into .c files
+  20% - Functionality implemented correctly
+  20% - Compiles, runs, performs the task
+  40% - Prac Signoffs (Irrelevant to the assignment)
+
+Current Mark Estimation
+  Code Comments              0/10
+  Coding Standards           0/10
+  Funcionality               0/20
+  Compiles, runs, performs   0/20
+  Prac Signoffs             10/40
+Total Marks                 10/100
+
+Due: 12PM, October 27th
+
+Args: ./spellcheck text-file
+Files: text-file, spellrc, dict
+  Spellrc
+    Same of dict file
+    Whether to autocorrect
+    Maximum diff between misspelled word and any suggested correction
+    (NOT IN SPEC) try to ignore comments
+    Should be stored in struct
+  Dict
+    Words separated by line-breaks
+    Should be read into a linked list, then put into a dynamic alloc'd array
+  Text-file
+    Words seperated by white-space, don't need to deal with punctuation
+    Output file doesn't need to preserve formatting
+    No word will surpass 50 chars
+      !! How to efficiently store 50 char words? !!
