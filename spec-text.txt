@@ -10,8 +10,8 @@ Current Mark Estimation
   Coding Standards           0/10
   Funcionality               0/20
   Compiles, runs, performs   0/20
-  Prac Signoffs             10/40
-Total Marks                 10/100
+  Prac Signoffs             25/40
+Total Marks                 25/100
 
 Due: 12PM, October 27th
 
