@@ -1,5 +1,5 @@
-CC = gcc
-CFLAGS = -ansi -Wall -pedantic
+CC = /usr/local/bin/gcc
+CFLAGS = -ansi -Wall -pedantic -g 
 OBJ = LinkedList.o spellsettings.o SpellCheck.o
 EXEC = SpellCheck
 

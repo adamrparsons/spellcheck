@@ -7,7 +7,7 @@ maxcorrection = 2
 
 ## Dictionary takes a file path to a dictionary file, with words seperated
 ## by line-breaks
-dictionary = thedictionary.txt
+dictionary = words
 
 ## Autocorrect takes a 'yes' or a 'no' for whether words should automatically
 ## be corrected, or if the user should be asked first

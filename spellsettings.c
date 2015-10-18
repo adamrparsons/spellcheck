@@ -1,47 +1,90 @@
-# include "settings.h"
+# include "spellsettings.h"
 
-void parseSettings(FILE *setfp, SettingsRC *settings)
+int parseSettings(FILE *setfp, SettingsRC *settings)
 {
+	int success = 0;
 	if (setfp != NULL)
 	{
-		parseSettingsFile(setfp, settings); // If file valid, start reading;
+		success = parseSettingsFile(setfp, settings); /* If file valid, start reading */
 	}
 	else if (setfp == NULL)
 	{
+		success = 4;
 		printf("settingsrc failed to read\n");
 	}
+	return success;
 }
 
-void parseSettingsFile(FILE *setfp, SettingsRC *settings)
+int parseSettingsFile(FILE *setfp, SettingsRC *settings)
 {
-	char* buffer, word, key, value;
-	while (ferror() = 0)
+	int success = 0;
+	int maxCorrectionRead = 0;
+	int dictionaryTextFNRead = 0;
+	int autoCorrectRead = 0;
+	char *buffer, *key, *value;
+	char* foo = NULL;
+
+	buffer = malloc(MAXLEN * sizeof(char));
+	key = malloc(MAXLEN * sizeof(char));
+	value = malloc(MAXLEN * sizeof(char));
+
+	/* FIXME: rename foo */
+	do
 	{
-		fgets(setfp, buffer, MAXLEN);
-		if (*(buffer + 0) == '#') //Line is a comment, ignore
+		foo = fgets(buffer, MAXLEN, setfp);
+		if ((*(buffer + 0) == '#')||(strlen(buffer) < 2)) /* Line is a comment, ignore */
 		{
+			/* printf("comment: %s\n", buffer);*/
 		}
 		else 
 		{
+			printf("Reading line: %s\n", buffer);
 			parseLine(buffer, key, value);
-			if (key == dictionary)
+			/* FIXME: dont compare to literals 		*/
+			/* FIXME: add bounds checking 			*/
+			printf("matching %p\n", key);
+			if (strcmp("dictionary", key) == 0)
 			{
-				
+				/*printf("dictionary found\n");*/
+				/* If you just assign 'settings->dictionaryTextFN = value' you will 
+				segfault when accessing the struct (because value has been freed) */
+				settings->dictionaryTextFN = malloc(MAXLEN * sizeof(char));
+				strcpy(settings->dictionaryTextFN, value);
+				dictionaryTextFNRead++;
+				/*printf("dictionary stored\n");*/
 			}
-			else if (key == maxcorrection)
+			else if (strcmp("maxcorrection", key) == 0)
 			{
-
+				/*printf("maxcorrection found\n");*/
+				settings-> maxCorrection = atoi(value);
+				maxCorrectionRead++;
+				/*printf("maxcorrection stored\n");*/
 			}
-			else if (key == autocorrect)
+			else if (strcmp("autocorrect", key) == 0)
 			{
-
+				/*printf("autocorrect found\n");*/
+				settings->autoCorrect = atoi(value);
+				autoCorrectRead++;
+				/*printf("autocorrect stored\n");*/
 			}
 			else
 			{
-				fprintf(stderr, "ERROR: Incorrect Directive %s\n", key);
+				success = 1;
+				fprintf(stderr, "ERROR: Unknown Directive %s\n", key);
 			}
 		}
+	} while (foo != NULL);
+
+	free(buffer);
+	free(key);
+	free(value);
+	if ((dictionaryTextFNRead == 0) || (autoCorrectRead == 0) || (maxCorrectionRead == 0))
+	{
+		/* FIXME: print what is missing */
+		printf("Some settings missing from settingsrc\n");
+		success = 2;
 	}
+	return success;
 }
 
 
@@ -53,66 +96,15 @@ Known Issues
 */
 int parseLine(char* inLine, char* key, char* value)
 {
-	int counter = 0;
-	char* line, outKey, outValue;
+	char *line;
 
 	line = malloc(MAXLEN * sizeof(char));
-	strncpy(inLine, line, MAXLEN);
-	line = removeSpacesFromString(line); /* Algorithm will only deal with line correctly if no whitespace */
-	while (line != null)
-	{
-		counter++;
-		if (counter == 1)
-		{	
-			outKey = strtok(line, '=');
-		}
-		else if (counter == 2)
-		{		
-			outValue = strtok(line, '=');
-		}
-		else 
-		{
-			fprintf(stderr, "ERROR: Incorrectly formatted line: %s\n", inLine);
-			counter = -1;
-		}
-	}
-	if (counter == 2)
-	{
-		key = outKey;
-		value = outValue;
-	}
-	return counter;
+	strncpy(line, inLine, MAXLEN);
+	sscanf(inLine, "%s = %s\n", key, value);
+	free(line);
+
+	return 0;
 }
-
-/* Removes only whitespace from a string, string will be reallocated to the new size */
-char* removeSpacesFromString (char* inString)
-{
-	int i;
-	int j = 0;
-	int k = 0;
-	char *outString;
-	int length = strlen(inString);
-
-	for (i = 0; i < length; i++)
-	{
-		if (inString[i] != ' ')
-		{
-			j++
-		}
-	}
-	outString = malloc((j + 1) * sizeof(char));
-	for (i = 0; i < length; i++)
-	{
-		if (inString[i] != ' ')
-		{
-			k++;
-			outString[k-1] = inString[i];
-		}
-	}
-	return outString;
-}
-
-
 
 
 
