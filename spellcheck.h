@@ -40,3 +40,4 @@ void printUsage(char** argV);
 void checkUserSpelling(char** uarr, int uarrLen, char** darr, int arrLen, SettingsRC *settings);
 int promptUser(char *word, char *suggestion);
 int doNotPromptUser(char *word, char *suggestion);
+int writeFileToDisk (char**, int, char** argV);

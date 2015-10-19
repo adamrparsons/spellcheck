@@ -27,6 +27,7 @@ void readStructuredUserFileToList(LinkedList *ulist, char **argV, int *success)
 		}
 		*success = 0;
 		free(buffer);
+		fclose(f);
 	}
 } 
 

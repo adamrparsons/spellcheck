@@ -82,6 +82,7 @@ int main (int argC, char* argV[])
 		{
 			printf("Great! now onto the actual spellcheck!\n");
 			checkUserSpelling(uarr, uarrLen, darr, darrLen, settings);
+			writeFileToDisk(uarr, uarrLen, argV);
 		}
 
 	/*	Free the mallocs */
@@ -181,7 +182,11 @@ int promptUser(char *word, char *suggestion)
 	int decision;
 	char prompt[5];
 	printf("REPLACE: \"%s\" WITH \"%s\" ? (Y/n)", word, suggestion);
-	scanf("%s\n", prompt);
+	/*scanf("%s", prompt);*/
+	/* fgets was chosen as it will allow you to hit enter for the default,
+		scanf will ignore the whitespace until you finally type a letter*/
+	fgets(prompt, 5, stdin);
+
 	if ((prompt[0] == 'N')||(prompt[0] == 'n'))
 	{
 		decision = FALSE;
@@ -198,4 +203,33 @@ int promptUser(char *word, char *suggestion)
 int doNotPromptUser(char *word, char *suggestion)
 {
 	return TRUE;
+}
+
+int writeFileToDisk (char **uarr, int uarrLen, char **argV)
+{
+	FILE *f;
+	int i, success;
+	char *outName;
+	outName = malloc((strlen(argV[1]) + strlen("-output") + 2) * sizeof(char));
+	memset(outName, '\0', 2);
+	strcat(outName, argV[1]);
+	strcat(outName, "-output");
+	printf("OUTPUT FN: %s\n", outName);
+	success = 1;
+	f = fopen(outName, "w");
+	if (f != NULL)
+	{
+		for (i = (uarrLen-1); i >= 0; i--)
+		{
+			fprintf(f, "%s\n", uarr[i]);
+			printf("fuckosss\n");
+		}
+		success = 0;
+		
+	}
+	else 
+	{
+		printf("FILE OUTPUT FAILURE\n");
+	}
+	return success;
 }
