@@ -17,7 +17,6 @@ void readStructuredDictionaryToList(SettingsRC *settings, LinkedList *dlist, int
 		{
 			nRead = fscanf(f, "%s\n", buffer);
 			if (nRead == 1)
-			{
 				insertWord(dlist, buffer);
 				inserted++;
 			}

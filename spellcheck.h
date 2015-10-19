@@ -23,8 +23,13 @@
 #include "dictionary.h"
 #endif
 
+#ifndef USERFILE_H
+#include "UserFile.h"
+#endif
+
 void readSettings(SettingsRC *settings, int *success);
 void readDictionaryIntoList(SettingsRC *settings, LinkedList *dlist, int *success);
 void readDictionaryListIntoArray(LinkedList *dlist, char ***darr, int *darrLen, int *success);
 void readUserFileToList(LinkedList *ulist, char** argV, int *success);
 void readUserListToArray(LinkedList *ulist, int *success);
+void printUsage(char** argV);

@@ -33,6 +33,7 @@ typedef struct SettingsRC{
 # define INVALIDSETTINGSRC 5
 # define INCOMPLETESETTINGSRC 6
 # define BADDICTIONARYFILE 7
+# define NOARGSGIVEN 8
 # define MAX 100
 #endif
 
