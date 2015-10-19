@@ -1,70 +1,134 @@
+/* 	spellcheck.c 
+*/
+
 # include "spellcheck.h"
 
 int main (int argC, char* argV[])
 {
-/* Declarations */
-	int ret = 1;
-	char** dictionaryArray;
-	FILE *setfp;
 	SettingsRC *settings;
-	LinkedList *dictList/*, *userFile*/;
-/* ------------ */
+	LinkedList *dlist, *ulist;
+	char **darr, **uarr;
+	int darrLen = 0;
+	/*int uarrLen = 0;*/
+	int success = -1;
+	int i;
 
-/* Sanity checking */
-/* --------------- */
+	/*  mallocs and sets */
+	settings = malloc(sizeof(SettingsRC));
+	setStruct(settings);
+	dlist = malloc(sizeof(LinkedList));
+	ulist = malloc(sizeof(LinkedList));
+	setList(dlist);
+	setList(ulist);
 
-/* Read spellrc */
-	setfp = fopen("spellrc", "r");
-	if (setfp != NULL)
+	/* 	initializations */
+	darr = NULL;
+	uarr = NULL;
+
+	readSettings(settings, &success);
+	if (success == 0)
 	{
-		settings = malloc(sizeof(SettingsRC));
-		parseSettings(setfp, settings);
-		ret = 0;
-		fclose(setfp);
+		readDictionaryIntoList(settings, dlist, &success);
+		if (success == 0)
+		{
+			readDictionaryListIntoArray(dlist, &darr, &darrLen, &success);
+			if (success == 0)
+			{
+				/* Do something, probably nothing */
+			}
+			else
+			{
+				printf("ERROR: readDictionaryListIntoArray() FAILED \n");
+			}
+		}
+		else
+		{
+			printf("ERROR: readDictionaryIntoList() FAILED\n");
+		}
 	}
-/* --------------- */
+	else
+	{
+		printf("Error: bad settingsrc %d\n", success);
+	}
+	if (success == 0)
+	{		
+		readUserFileToList(ulist, argV, &success);
+		if (success	== 0)
+		{
+			readUserListToArray(ulist, &success);
+			if (success == 0)
+			{
+				/* Successful */
+			}
+			else
+			{
+				printf("ERROR: readUserListToArray FAILED\n");
+			}
+		}
+		else 
+		{
+			printf("Error reading User File: %d\n", success);
+		}
+	}
 
-/* Read Dictionary */
+/*	Free the mallocs */
+	if (settings != NULL)
+	{
+		if (settings->dictionaryTextFN != NULL)
+		{
+			free(settings->dictionaryTextFN);
+		}
+		free(settings);
+	}
+	if (ulist != NULL)
+	{
+		free(ulist);
+	}
+	if (dlist != NULL)
+	{
+		free(dlist);
+	}
+/**/
+	printf("darr addr %p\n", darr);
+	for (i = 0; i < darrLen; i++)
+	{
+		free(*(darr+i));
+	}
+	free(darr);
 
-	dictList = malloc(sizeof(LinkedList));
-	readDictIntoList(dictList, settings);
-	dictionaryArray = putListIntoArray(dictList);
-	free(dictList);	
-/* --------------- */
-
-/* Read User file */
-
-/* --------------- */
-
-
-
-	/*
-		Not freed yet:
-			*settings
-	*/
-	free(settings->dictionaryTextFN);
-	free(settings);
-	free(dictionaryArray);
-
-	return ret;
+	return success;
 }
 
-void readDictIntoList(LinkedList *dictList, SettingsRC *settings)
+void readSettings(SettingsRC *settings, int *success)
 {
-	FILE *dictionary_fp;
-	dictionary_fp = fopen(settings->dictionaryTextFN, "r");
-	if (dictionary_fp == NULL)
-	{
-		perror("File Error: ");
-	}
-	else if (dictionary_fp != NULL)
-	{
-		readFileToList(dictionary_fp, dictList);	
-	}
+	printf("readSettings()\n");
+	processSettingsFile(settings, success);
 }
 
-
-char** putListIntoArray(LinkedList *dictList)
+void readDictionaryIntoList(SettingsRC *settings, LinkedList *dlist, int *success)
 {
-	return (char**)NULL;
+	printf("readDictionaryIntoList()\n");
+	readStructuredDictionaryToList(settings, dlist, success);
+}
+
+void readDictionaryListIntoArray(LinkedList *dlist, char ***darr, int *darrLen, int *success)
+{
+	printf("readDictionaryListIntoArray()\n");
+	listToArray(dlist, darr, darrLen, success);
+}
+
+void readUserFileToList(LinkedList *ulist, char** argV, int *success)
+{
+	int ret = -1;
+	printf("readUserFileToList(............................)\n");
+
+	*success = ret;
+}
+
+void readUserListToArray(LinkedList *ulist, int *success)
+{
+	int ret = -1;
+	printf("readUserListToArray(............................)\n");
+
+	*success = ret;
 }

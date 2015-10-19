@@ -31,3 +31,7 @@ Files: text-file, spellrc, dict
     Output file doesn't need to preserve formatting
     No word will surpass 50 chars
       !! How to efficiently store 50 char words? !!
+
+
+
+as of the settings file being fully read, valgrind returns no leaked memory

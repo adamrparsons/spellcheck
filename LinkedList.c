@@ -1,52 +1,42 @@
-#include "LinkedList.h"
+/* LinkedList.c
+*/
 
-/*void initLinkedList(LinkedList *ll)
-{
-	if (ll == NULL)
-	{
-		printf("ERROR: initLinkedList(): LinkedList is NULL\n");
-	}
-	else 
-	{
-		if (ll->head != NULL)
-		{
-			printf("ERROR: initLinkedList(): LinkedList is already initialised\n");
-		}
-		else
-		{
-			ll->head = malloc(sizeof(Node));
-		}
-	}
-}*/
+# include "LinkedList.h"
 
-void insertWord (char *word, LinkedList *ll)
+/* Set head of list to NULL */
+void setList(LinkedList *ll)
 {
+	if (ll != NULL)
+	{
+		ll->head = NULL;
+	}
+	else
+	{
+		printf("ERROR: LinkedList NOT NULL\n");
+	}
+}
+
+int insertWord(LinkedList *ll, char *word)
+{
+	int ret = -1;
 	Node *incoming;
 
 	incoming = malloc(sizeof(Node));
-	incoming->data = malloc(strlen(word) * sizeof(char));
-	incoming->next = NULL;
-	strncpy(incoming->data, word, MAXWORDLEN);
-	
-	if(getLength(ll) == 0)
+	incoming->data = malloc(strlen(word)+1 * sizeof(char));
+	incoming->next = ll->head;
+	ll->head = incoming;
+	/* FIXME: consider using strncpy*/
+	strcpy(incoming->data, word);
+	if (strcmp(incoming->data, word))
 	{
-		ll->head = incoming;
+		ret = 0;
 	}
-	else if(getLength(ll) > 0)
-	{
-		incoming->next = ll->head;
-		ll->head = incoming;
-	}
-	else 
-	{
-		printf("Something went wrong\n");
-	}
+	return ret;
 }
 
 int getLength (LinkedList *ll)
 {
 	int length;
-
 	Node *currNode = ll->head;
 	if (currNode == NULL)
 	{
@@ -69,44 +59,43 @@ int getLength (LinkedList *ll)
 	return length;
 }
 
-/* This function will assume words will have punctuation,
-whitespace, and newlines anywhere. This will read char-by-char
-to fill a single line, process, then move onto the next line */
-void readFileToList(FILE *f, LinkedList *ll)
+char* dequeue(LinkedList *ll)
 {
-	int ch = 0;
-	int bufferPosition = 0;
-	char* buffer, c;
-	int bufferSize = 48;
-	buffer = malloc(bufferSize * sizeof(char));
-	while (ch != EOF)
-	{
-		while ((char)ch != '\n')
-		{
-			if (bufferPosition > bufferSize - 2)
-			{
-				doubleBuffer(buffer, &bufferSize);
-			}
-			ch = fgetc(f);
-			c = (char)ch;
+	Node *currNode;
+	int wordLength;
+	char* wordOut = NULL;
 
-			/* Eliminates punctuation and other non-letter chars */
-			if (((c >= 'a') && (c <= 'z')) ||((c >= 'A') && (c <= 'Z')) || (c == ' '))
-			{
-				*(buffer + bufferPosition) = ch;
-				buffer++;
-			}
-		}
-
+	if (ll->head != NULL)
+	{	
+		currNode = ll->head;
+		wordLength = strlen(currNode->data);
+		wordOut = malloc(wordLength+1 * sizeof(char));
+		strncpy(wordOut, currNode->data, wordLength+1);
+		ll->head = currNode->next;
+		free(currNode->data);
+		free(currNode);
 	}
+	else 
+	{
+		fprintf(stderr, "ERROR: Cannot dequeue NULL or empty LinkedList\n");
+	}
+
+	return wordOut;
 }
 
-char* doubleBuffer(char* buffer, int *bufferSize)
+
+void listToArray(LinkedList *list, char ***arr, int *arrLen, int *success)
 {
-	char* newBuf = malloc(*bufferSize * 2);
-	memcpy(newBuf, buffer, *bufferSize);
-	free(buffer);
-	*bufferSize = *bufferSize * 2;
-	return newBuf;
+	int listLength, i;
+
+	listLength = getLength(list);
+	*arrLen = listLength;
+	printf("Processing %d nodes\n", listLength);
+	*arr = malloc(listLength * sizeof(char*));
+	printf("arr: %p\n", *arr);
+	for (i = 0; i < listLength; i++)
+	{
+		*(*arr + i) = dequeue(list);
+	}
 }
 

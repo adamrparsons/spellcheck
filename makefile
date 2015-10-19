@@ -1,20 +1,25 @@
-CC = /usr/local/bin/gcc
+CC = /usr/bin/clang
 CFLAGS = -ansi -Wall -pedantic -g 
-OBJ = LinkedList.o spellsettings.o SpellCheck.o
-EXEC = SpellCheck
+OBJ = spellcheck.o Settings.o LinkedList.o dictionary.o check.o
+EXEC = spellcheck
 
 $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC)
 
-SpellCheck.o : SpellCheck.c SpellCheck.h
-	$(CC) $(CFLAGS) -c SpellCheck.c
+spellcheck.o : spellcheck.c spellcheck.h LinkedList.h Settings.h
+	$(CC) $(CFLAGS) -c spellcheck.c
+
+Settings.o : Settings.c Settings.h
+	$(CC) $(CFLAGS) -c Settings.c
 
 LinkedList.o : LinkedList.c LinkedList.h
-	$(CC) $(CFLAGS) -c LinkedList.c
+	$(CC) $(CFLAGS) -c LinkedList.c	
 
-spellsettings.o : spellsettings.c spellsettings.h
-	$(CC) $(CFLAGS) -c spellsettings.c
+dictionary.o : dictionary.c dictionary.h
+	$(CC) $(CFLAGS) -c dictionary.c
+
+check.o : check.c check.h
+	$(CC) $(CFLAGS) -c check.c
 
 clean : 
 	rm -rf $(EXEC) $(OBJ)
-
