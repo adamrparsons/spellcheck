@@ -63,7 +63,7 @@ int main (int argC, char* argV[])
 			readUserFileToList(ulist, argV, &success);
 			if (success	== 0)
 			{
-				readUserListToArray(ulist, &success);
+				readUserListToArray(ulist, &uarr, &uarrLen, &success);
 				if (success == 0)
 				{
 					/* Successful */
@@ -78,6 +78,11 @@ int main (int argC, char* argV[])
 				printf("Error reading User File: %d\n", success);
 			}
 		}
+		if (success == 0)
+		{
+			printf("Great! now onto the actual spellcheck!\n");
+			checkUserSpelling(uarr, uarrLen, darr, darrLen, settings);
+		}
 
 	/*	Free the mallocs */
 		if (settings != NULL)
@@ -90,10 +95,12 @@ int main (int argC, char* argV[])
 		}
 		if (ulist != NULL)
 		{
+			freeList(ulist);
 			free(ulist);
 		}
 		if (dlist != NULL)
 		{
+			freeList(dlist);
 			free(dlist);
 		}
 		if (success == 0)
@@ -105,6 +112,14 @@ int main (int argC, char* argV[])
 					free(*(darr+i));
 				}
 				free(darr);
+			}
+			if (uarr != NULL)
+			{
+				for (i = 0; i < uarrLen; i++)
+				{
+					free(*(uarr+i));
+				}
+				free(uarr);
 			}
 		}
 	}
@@ -131,18 +146,56 @@ void readDictionaryListIntoArray(LinkedList *dlist, char ***darr, int *darrLen, 
 
 void readUserFileToList(LinkedList *ulist, char** argV, int *success)
 {
-	printf("readUserFileToList(............................)\n");
+	printf("readUserFileToList()\n");
 	readStructuredUserFileToList(ulist, argV, success);
 }
 
-void readUserListToArray(LinkedList *ulist, int *success)
+void readUserListToArray(LinkedList *ulist,  char ***uarr, int *uarrLen, int *success)
 {
-	printf("readUserListToArray(............................)\n");
-
-	*success = 0;
+	printf("readUserListToArray()\n");
+	listToArray(ulist, uarr, uarrLen, success);
 }
 
 void printUsage(char** argV)
 {
 	printf("bad arguments, need one (1) file for checking");
+}
+
+void checkUserSpelling (char** uarr, int uarrLen, char** darr, int darrLen, SettingsRC *settings)
+{
+	/* From check.h */
+	ActionFunc action;
+	if (settings->autoCorrect == TRUE)
+	{
+		action = &doNotPromptUser;
+	}
+	else if (settings->autoCorrect == FALSE)
+	{
+		action = &promptUser;
+	}
+	check(uarr, uarrLen, darr, darrLen, settings->maxCorrection, action);
+}
+
+int promptUser(char *word, char *suggestion)
+{
+	int decision;
+	char prompt[5];
+	printf("REPLACE: \"%s\" WITH \"%s\" ? (Y/n)", word, suggestion);
+	scanf("%s\n", prompt);
+	if ((prompt[0] == 'N')||(prompt[0] == 'n'))
+	{
+		decision = FALSE;
+		printf("NO\n");
+	}
+	else
+	{
+		decision = TRUE;
+		printf("YES\n");
+	}
+	return decision;
+}
+
+int doNotPromptUser(char *word, char *suggestion)
+{
+	return TRUE;
 }

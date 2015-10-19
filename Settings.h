@@ -10,8 +10,8 @@
 #ifndef stdlib_h
 #include <stdlib.h>
 #endif
-#ifndef String_h
-#include <String.h>
+#ifndef string_h
+#include <string.h>
 #endif
 
 #ifndef FALSE

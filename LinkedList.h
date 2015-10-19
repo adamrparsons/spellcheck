@@ -9,8 +9,8 @@
 #ifndef stdlib_h
 #include <stdlib.h>
 #endif
-#ifndef String_h
-#include <String.h>
+#ifndef string_h
+#include <string.h>
 #endif
 
 #ifndef Node
@@ -31,3 +31,4 @@ int insertWord(LinkedList *, char *word);
 int getLength(LinkedList *);
 char* dequeue(LinkedList *);
 void listToArray(LinkedList *, char ***, int *arrLen, int *success);
+void freeList(LinkedList *);

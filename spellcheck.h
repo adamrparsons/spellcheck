@@ -7,8 +7,8 @@
 #ifndef stdlib_h
 #include <stdlib.h>
 #endif
-#ifndef String_h
-#include <String.h>
+#ifndef string_h
+#include <string.h>
 #endif
 
 #ifndef LINKEDLIST_H
@@ -27,9 +27,16 @@
 #include "UserFile.h"
 #endif
 
+#ifndef CHECK_H
+#include "check.h"
+#endif
+
 void readSettings(SettingsRC *settings, int *success);
 void readDictionaryIntoList(SettingsRC *settings, LinkedList *dlist, int *success);
 void readDictionaryListIntoArray(LinkedList *dlist, char ***darr, int *darrLen, int *success);
 void readUserFileToList(LinkedList *ulist, char** argV, int *success);
-void readUserListToArray(LinkedList *ulist, int *success);
+void readUserListToArray(LinkedList *ulist, char ***uarr, int *uarrLen, int *success);
 void printUsage(char** argV);
+void checkUserSpelling(char** uarr, int uarrLen, char** darr, int arrLen, SettingsRC *settings);
+int promptUser(char *word, char *suggestion);
+int doNotPromptUser(char *word, char *suggestion);

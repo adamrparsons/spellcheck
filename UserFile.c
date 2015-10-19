@@ -17,7 +17,7 @@ void readStructuredUserFileToList(LinkedList *ulist, char **argV, int *success)
 		while (nRead > 0)
 		{
 			nRead = fscanf(f, "%s", buffer);
-			if (nRead = 1)
+			if (nRead == 1)
 			{
 				stripPunctuation(buffer);
 
@@ -28,16 +28,17 @@ void readStructuredUserFileToList(LinkedList *ulist, char **argV, int *success)
 		*success = 0;
 		free(buffer);
 	}
-}
+} 
 
 void stripPunctuation(char *buffer)
 {
-	char* newBuf = malloc(50 * sizeof(char));
+/*	Planned for later	*/
+/*	char* newBuf = malloc(50 * sizeof(char));
 	int len = strlen(buffer);
 	int i;
 	int counter = 0;
 	for (i = 0)
 	{
 		if ((buffer[i] >'A'))
-	}
+	}*/
 }

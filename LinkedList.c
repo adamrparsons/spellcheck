@@ -92,10 +92,24 @@ void listToArray(LinkedList *list, char ***arr, int *arrLen, int *success)
 	*arrLen = listLength;
 	printf("Processing %d nodes\n", listLength);
 	*arr = malloc(listLength * sizeof(char*));
-	printf("arr: %p\n", *arr);
 	for (i = 0; i < listLength; i++)
 	{
 		*(*arr + i) = dequeue(list);
 	}
 }
 
+void freeList(LinkedList *ll)
+{
+	Node *currNode, *newNode;
+	if (ll != NULL)
+	{
+		currNode = ll->head;
+		while (currNode != NULL)
+		{
+			newNode = currNode->next;
+			free(currNode->data);
+			free(currNode);
+			currNode = newNode;
+		}
+	}
+}

@@ -1,4 +1,4 @@
-CC = /usr/bin/clang
+CC = gcc
 CFLAGS = -ansi -Wall -pedantic -g 
 OBJ = 	spellcheck.o Settings.o LinkedList.o dictionary.o \
 		check.o UserFile.o
