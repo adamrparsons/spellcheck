@@ -1,9 +1,11 @@
-/* 	spellcheck.c 
+/* 	spellcheck.c
+	Adam Parsons, 17160357 
+	COMP1000 2015S2 Assignment
 */
 
 # include "spellcheck.h"
 
-int main (int argC, char* argV[])
+int main (int argc, char* argV[])
 {
 	SettingsRC *settings;
 	LinkedList *dlist, *ulist;
@@ -13,9 +15,11 @@ int main (int argC, char* argV[])
 	int success = 0;
 	int i;
 
-	if (argC != 2)
+	printf("%d\n",argc);
+
+	if (argc != 2)
 	{
-		printf("args given %d\n", argC);
+		printf("args given %d\n", argc);
 		printUsage(argV);
 		success = NOARGSGIVEN;
 	}
@@ -222,14 +226,14 @@ int writeFileToDisk (char **uarr, int uarrLen, char **argV)
 		for (i = (uarrLen-1); i >= 0; i--)
 		{
 			fprintf(f, "%s\n", uarr[i]);
-			printf("fuckosss\n");
 		}
 		success = 0;
-		
+		fclose(f);	
 	}
 	else 
 	{
 		printf("FILE OUTPUT FAILURE\n");
 	}
+	free(outName);
 	return success;
 }

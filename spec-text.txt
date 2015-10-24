@@ -7,11 +7,11 @@ Mark Allocation
 
 Current Mark Estimation
   Code Comments              0/10
-  Coding Standards           0/10
-  Funcionality               0/20
-  Compiles, runs, performs   0/20
-  Prac Signoffs             25/40
-Total Marks                 25/100
+  Coding Standards           3/10
+  Funcionality              10/20
+  Compiles, runs, performs  10/20
+  Prac Signoffs             30/40
+Total Marks                 53/100
 
 Due: 12PM, October 27th
 
@@ -32,6 +32,26 @@ Files: text-file, spellrc, dict
     No word will surpass 50 chars
       !! How to efficiently store 50 char words? !!
 
+  TODO:
+    Spec:
+      Commenting
+        functions
+        procedures
+        top of every file
+      README.txt
+        list of files and purpose
+        statement of how much assignment is completed
+          – How much of the required functionality you attempted to get working, and 
+          – How much actually does work, to the best of your knowledge.
+        list of issues reported by valgrind
+          also any known bugs in the program
+        Which computer I tested on.
 
+      change variable names
+      verify makefile correct
+      optimise malloc sizes
+      damage the spellrc file
 
-as of the settings file being fully read, valgrind returns no leaked memory
+    Optional:
+      Formatting the output
+      add punctuation
