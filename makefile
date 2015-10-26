@@ -7,8 +7,8 @@ EXEC = spellcheck
 $(EXEC) : $(OBJ)
 	$(CC) $(OBJ) -o $(EXEC)
 
-spellcheck.o : spellcheck.c spellcheck.h LinkedList.h \
-				Settings.h UserFile.h dictionary.h
+spellcheck.o : spellcheck.c spellcheck.h LinkedList.h Settings.h UserFile.h \
+				dictionary.h check.h
 	$(CC) $(CFLAGS) -c spellcheck.c
 
 Settings.o : Settings.c Settings.h
@@ -17,10 +17,10 @@ Settings.o : Settings.c Settings.h
 LinkedList.o : LinkedList.c LinkedList.h
 	$(CC) $(CFLAGS) -c LinkedList.c	
 
-dictionary.o : dictionary.c dictionary.h
+dictionary.o : dictionary.c dictionary.h LinkedList.h Settings.h
 	$(CC) $(CFLAGS) -c dictionary.c
 
-UserFile.o : UserFile.c UserFile.h
+UserFile.o : UserFile.c UserFile.h LinkedList.h
 	$(CC) $(CFLAGS) -c UserFile.c
 
 check.o : check.c check.h
