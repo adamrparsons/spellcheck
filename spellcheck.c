@@ -169,15 +169,21 @@ void checkUserSpelling (char** uarr, int uarrLen, char** darr, int darrLen, Sett
 {
 	/* From check.h */
 	ActionFunc action;
-	if (settings->autoCorrect == TRUE)
+	if (settings->autoCorrect != FALSE)
 	{
+		fprintf(stderr, "Not Prompting User\n");
 		action = &doNotPromptUser;
+		check(uarr, uarrLen, darr, darrLen, settings->maxCorrection, action);	
 	}
 	else if (settings->autoCorrect == FALSE)
 	{
 		action = &promptUser;
+		check(uarr, uarrLen, darr, darrLen, settings->maxCorrection, action);
 	}
-	check(uarr, uarrLen, darr, darrLen, settings->maxCorrection, action);
+	else 
+	{
+		printf("Something Went Wrong™\n");
+	}
 }
 
 int promptUser(char *word, char *suggestion)
