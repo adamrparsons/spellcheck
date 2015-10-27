@@ -28,7 +28,7 @@ void processSettingsFile(SettingsRC *settings, int *success)
 		settingsFp = fopen(settingsRCFileName, "r");
 		if (settingsFp != NULL)
 		{
-			printf("spellrc opened for reading\n");
+			/*printf("spellrc opened for reading\n");*/
 			readInValues = fscanf(settingsFp, "%s = %s\n", key, value);
 			do
 			{
@@ -38,7 +38,7 @@ void processSettingsFile(SettingsRC *settings, int *success)
 					settings->maxCorrection = atoi(value);
 					if (settings->maxCorrection < 0)
 					{
-						printf("ERROR: maxcorrection is negative\n");
+						fprintf(stderr,"ERROR: maxcorrection is negative\n");
 						errVal = 1;
 					}
 				}
@@ -47,9 +47,17 @@ void processSettingsFile(SettingsRC *settings, int *success)
 					b++;
 					settings->autoCorrect = strncmp(value, "no", strlen(value));
 					if(settings->autoCorrect == 0)
+					{
 						printf("autoCorrect is off, %i\n", settings->autoCorrect);
-					else
+					}
+					else if (strcmp(value, "yes") == 0)
+					{
 						printf("autoCorrect is on, %i\n", settings->autoCorrect);
+					}
+					else 
+					{
+						*success = INVALIDSETTINGSRC;
+					}
 				}
 				else if (strncmp(key, "dictionary", strlen("dictionary"))==0)
 				{
@@ -70,7 +78,7 @@ void processSettingsFile(SettingsRC *settings, int *success)
 				readInValues = fscanf(settingsFp, "%s = %s\n", key, value);
 			} while (readInValues == 2);
 			fclose(settingsFp);
-			printf("spellrc file closed with %i,%i,%i, directives\n", a,b,c);
+			/*printf("spellrc file closed with %i,%i,%i, directives\n", a,b,c);*/
 
 			if ((a>0)&&(b>0)&&(c>0)&&(errVal==0))
 			{
@@ -79,12 +87,12 @@ void processSettingsFile(SettingsRC *settings, int *success)
 			else
 			{
 				*success = INCOMPLETESETTINGSRC;
-				printf("INCOMPLETESETTINGSRC\n");
+				fprintf(stderr,"INCOMPLETESETTINGSRC\n");
 			}
 		}
 		else 
 		{
-			printf("settingsFp is NULL\n");
+			fprintf(stderr,"settingsFp is NULL\n");
 			*success = VOIDFILEFP;
 		}
 	}

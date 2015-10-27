@@ -31,5 +31,5 @@ void readStructuredDictionaryToList(SettingsRC *settings, LinkedList *dlist, int
 		perror("perror: ");
 		*success = BADDICTIONARYFILE;
 	}
-	printf("Total of %d words read from dict file\n", inserted);
+	/*printf("Total of %d words read from dict file\n", inserted);*/
 }

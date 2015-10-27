@@ -1,3 +1,6 @@
+## Spellcheck Makefile - COMP1000 Assignment 2015S2
+## Adam Parsons, 17160356
+
 CC = gcc
 CFLAGS = -ansi -Wall -pedantic -g 
 OBJ = 	spellcheck.o Settings.o LinkedList.o dictionary.o \

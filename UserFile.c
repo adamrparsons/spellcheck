@@ -9,11 +9,12 @@ void readStructuredUserFileToList(LinkedList *ulist, char **argV, int *success)
 	char *buffer;
 	int nRead = 1;
 
-	printf("%s\n", *(argV + 1));
+	/*print filename of user file provided*/
+	/*printf("%s\n", *(argV + 1));*/
 	f = fopen(*(argV + 1), "r");
 	if (f != NULL)
 	{
-		buffer = malloc(50 * sizeof(char));
+		buffer = malloc(100 * sizeof(char));
 		while (nRead > 0)
 		{
 			nRead = fscanf(f, "%s", buffer);

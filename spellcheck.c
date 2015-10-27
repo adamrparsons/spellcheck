@@ -1,6 +1,7 @@
-/* 	spellcheck.c
-	Adam Parsons, 17160357 
-	COMP1000 2015S2 Assignment
+/**
+* spellcheck.c
+* COMP1000 Assignment 2015S2
+* Adam Parsons, 17160357
 */
 
 # include "spellcheck.h"
@@ -15,11 +16,9 @@ int main (int argc, char* argV[])
 	int success = 0;
 	int i;
 
-	printf("%d\n",argc);
-
 	if (argc != 2)
 	{
-		printf("args given %d\n", argc);
+		fprintf(stderr,"args given %d\n", argc);
 		printUsage(argV);
 		success = NOARGSGIVEN;
 	}
@@ -50,17 +49,17 @@ int main (int argc, char* argV[])
 				}
 				else
 				{
-					printf("ERROR: readDictionaryListIntoArray() FAILED \n");
+					fprintf(stderr,"ERROR: readDictionaryListIntoArray() FAILED \n");
 				}
 			}
 			else
 			{
-				printf("ERROR: readDictionaryIntoList() FAILED\n");
+				fprintf(stderr,"ERROR: readDictionaryIntoList() FAILED\n");
 			}
 		}
 		else
 		{
-			printf("Error: bad settingsrc %d\n", success);
+			fprintf(stderr,"Error: bad settingsrc %d\n", success);
 		}
 		if (success == 0)
 		{		
@@ -74,12 +73,12 @@ int main (int argc, char* argV[])
 				}
 				else
 				{
-					printf("ERROR: readUserListToArray FAILED\n");
+					fprintf(stderr,"ERROR: readUserListToArray FAILED\n");
 				}
 			}
 			else 
 			{
-				printf("Error reading User File: %d\n", success);
+				fprintf(stderr,"Error reading User File: %d\n", success);
 			}
 		}
 		if (success == 0)
@@ -133,31 +132,31 @@ int main (int argc, char* argV[])
 
 void readSettings(SettingsRC *settings, int *success)
 {
-	printf("readSettings()\n");
+	/*printf("readSettings()\n");*/
 	processSettingsFile(settings, success);
 }
 
 void readDictionaryIntoList(SettingsRC *settings, LinkedList *dlist, int *success)
 {
-	printf("readDictionaryIntoList()\n");
+	/*printf("readDictionaryIntoList()\n");*/
 	readStructuredDictionaryToList(settings, dlist, success);
 }
 
 void readDictionaryListIntoArray(LinkedList *dlist, char ***darr, int *darrLen, int *success)
 {
-	printf("readDictionaryListIntoArray()\n");
+	/*printf("readDictionaryListIntoArray()\n");*/
 	listToArray(dlist, darr, darrLen, success);
 }
 
 void readUserFileToList(LinkedList *ulist, char** argV, int *success)
 {
-	printf("readUserFileToList()\n");
+	/*printf("readUserFileToList()\n");*/
 	readStructuredUserFileToList(ulist, argV, success);
 }
 
 void readUserListToArray(LinkedList *ulist,  char ***uarr, int *uarrLen, int *success)
 {
-	printf("readUserListToArray()\n");
+	/*printf("readUserListToArray()\n");*/
 	listToArray(ulist, uarr, uarrLen, success);
 }
 
@@ -218,7 +217,7 @@ int writeFileToDisk (char **uarr, int uarrLen, char **argV)
 	memset(outName, '\0', 2);
 	strcat(outName, argV[1]);
 	strcat(outName, "-output");
-	printf("OUTPUT FN: %s\n", outName);
+	fprintf(stderr,"OUTPUT FN: %s\n", outName);
 	success = 1;
 	f = fopen(outName, "w");
 	if (f != NULL)

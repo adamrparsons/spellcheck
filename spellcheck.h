@@ -1,4 +1,7 @@
-/*	spellcheck.h
+/**
+* spellcheck.h
+* COMP1000 Assignment 2015S2
+* Adam Parsons, 17160357
 */
 
 #ifndef stdio_h

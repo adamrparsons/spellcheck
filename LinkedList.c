@@ -12,10 +12,11 @@ void setList(LinkedList *ll)
 	}
 	else
 	{
-		printf("ERROR: LinkedList NOT NULL\n");
+		fprintf(stderr, "ERROR: LinkedList NOT NULL\n");
 	}
 }
 
+/* Function takes a single word (char*) and pointer to the linked-list, and stores it at the top of the list (stack) */
 int insertWord(LinkedList *ll, char *word)
 {
 	int ret = -1;
@@ -34,6 +35,7 @@ int insertWord(LinkedList *ll, char *word)
 	return ret;
 }
 
+/* Takes a linked-list pointer and returns the size of the linkedlist as an int of nodes found */
 int getLength (LinkedList *ll)
 {
 	int length;
@@ -59,6 +61,9 @@ int getLength (LinkedList *ll)
 	return length;
 }
 
+/* FIXME: Should be 'pop' not 'dequeue', as this operates in a stack fashion */
+/* This function will take a linked-list pointer and return the 'word' sitting on the 
+    stack, and reset the head to be the next 'word' */
 char* dequeue(LinkedList *ll)
 {
 	Node *currNode;
@@ -83,14 +88,15 @@ char* dequeue(LinkedList *ll)
 	return wordOut;
 }
 
-
+/* This function will take a populated linked-list, an uninitialised 2D array
+    (in the form of a char triple pointer, so that the double pointer may be accessed outside) */
 void listToArray(LinkedList *list, char ***arr, int *arrLen, int *success)
 {
 	int listLength, i;
 
 	listLength = getLength(list);
 	*arrLen = listLength;
-	printf("Processing %d nodes\n", listLength);
+	/*printf("Processing %d nodes\n", listLength);*/
 	*arr = malloc(listLength * sizeof(char*));
 	for (i = 0; i < listLength; i++)
 	{
@@ -98,6 +104,7 @@ void listToArray(LinkedList *list, char ***arr, int *arrLen, int *success)
 	}
 }
 
+/* Takes a linked-list pointer, and will subsequently free all nodes and their members */ 
 void freeList(LinkedList *ll)
 {
 	Node *currNode, *newNode;
